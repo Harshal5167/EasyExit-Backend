@@ -70,14 +70,14 @@ export const sendNotificationToTopic = async (req, res) => {
 
 export const getNotification = async (req, res) => {
     try {
-        const { topic } = req.body;
+        const { topic = 'ann' } = req.body;
         const { organizationId, email } = req.user;
 
         const notification = await prisma.notifications.findMany({
             // where: { topic, organizationId },
             where: {
                 AND: [
-                    { topic },
+                    { topic: `${organizationId}-${topic}` },
                     { organizationId },
                     {
                         OR: [
